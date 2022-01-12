@@ -9,7 +9,7 @@ Redmine::Plugin.register :redmine_wiki_sql do
   author 'Rodrigo Ramalho'
   author_url 'http://www.rodrigoramalho.com/'
   description 'Allows you to run SQL queries and have them shown on your wiki in table format'
-  version '0.2'
+  version '0.3.0'
 
   Redmine::WikiFormatting::Macros.register do
     desc "Run SQL query"
@@ -39,7 +39,7 @@ Redmine::Plugin.register :redmine_wiki_sql do
         end
         tbody << '</tbody>'
       end
-      table = +'<table>' << thead << tbody << '</table>'
+      table = +'<table class="list issue-report">' << thead << tbody << '</table>'
       table.html_safe
     end
   end
