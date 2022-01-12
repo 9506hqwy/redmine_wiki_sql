@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'redmine'
 require 'open-uri'
 require 'issue'
@@ -12,35 +14,33 @@ Redmine::Plugin.register :redmine_wiki_sql do
   Redmine::WikiFormatting::Macros.register do
     desc "Run SQL query"
     macro :sql do |obj, args, text|
+      sentence = args.join(",")
+      sentence = sentence.gsub("\\(", "(")
+      sentence = sentence.gsub("\\)", ")")
+      sentence = sentence.gsub("\\*", "*")
 
-        _sentence = args.join(",")
-        _sentence = _sentence.gsub("\\(", "(")
-        _sentence = _sentence.gsub("\\)", ")")
-        _sentence = _sentence.gsub("\\*", "*")
+      result = ActiveRecord::Base.connection.exec_query(sentence)
+      thead = +'<thead><tr>'
+      result.columns.each do |column|
+        thead << '<th>' + column.to_s + '</th>'
+      end
+      thead << '</tr></thead>'
 
-        result = ActiveRecord::Base.connection.exec_query(_sentence)
-        _thead = '<thead><tr>'
-        result.columns.each do |column|
-          _thead << '<th>' + column.to_s + '</th>'
-        end
-        _thead << '</tr></thead>'
-
-        unless result.empty?()
-          _tbody = '<tbody>'
-          result.each do |row|
-            _tbody << '<tr>'
-            result.columns.each do |column|
-              _tbody << '<td>' + row[column.to_s].to_s + '</td>'
-            end
-            _tbody << '</tr>'
+      if result.empty?
+        tbody = ''
+      else
+        tbody = +'<tbody>'
+        result.each do |row|
+          tbody << '<tr>'
+          result.columns.each do |column|
+            tbody << '<td>' + row[column.to_s].to_s + '</td>'
           end
-          _tbody << '</tbody>'
-        else
-          _tbody = ''
+          tbody << '</tr>'
         end
-        text = '<table>' << _thead << _tbody << '</table>' 
-        text.html_safe
-    end 
+        tbody << '</tbody>'
+      end
+      table = +'<table>' << thead << tbody << '</table>'
+      table.html_safe
+    end
   end
-	
 end
