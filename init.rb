@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 require 'redmine'
-require 'open-uri'
-require 'issue'
 
 Redmine::Plugin.register :redmine_wiki_sql do
   name 'Redmine Wiki SQL'
