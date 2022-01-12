@@ -6,11 +6,16 @@ Follow the default redmine plugin installation steps at http://www.redmine.org/p
 
 Usage:
 
-Put this inside a wiki page: {{sql( *Your Query* )}}
+Put this inside a wiki page:
+{{sql
+*Your Query*
+}}
 
 Example:
 
-{{sql(select id as 'ID', subject as 'Subject', DATE_FORMAT\(issues.due_date , '%d/%m/%Y'\) AS 'Due Date' from issues)}}
+{{sql
+select id as 'ID', subject as 'Subject', DATE_FORMAT\(issues.due_date , '%d/%m/%Y'\) AS 'Due Date' from issues
+}}
 
 Known problems:
 

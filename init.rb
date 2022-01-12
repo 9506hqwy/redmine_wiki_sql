@@ -14,7 +14,7 @@ Redmine::Plugin.register :redmine_wiki_sql do
   Redmine::WikiFormatting::Macros.register do
     desc "Run SQL query"
     macro :sql do |obj, args, text|
-      sentence = args.join(",")
+      sentence = text
       sentence = sentence.gsub("\\(", "(")
       sentence = sentence.gsub("\\)", ")")
       sentence = sentence.gsub("\\*", "*")
