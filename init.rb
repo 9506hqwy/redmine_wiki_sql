@@ -18,6 +18,9 @@ Redmine::Plugin.register :redmine_wiki_sql do
       sentence = sentence.gsub("\\(", "(")
       sentence = sentence.gsub("\\)", ")")
       sentence = sentence.gsub("\\*", "*")
+      sentence = ActiveRecord::Base.send(
+        :sanitize_sql_array,
+        [sentence] + args)
 
       result = ActiveRecord::Base.connection.exec_query(sentence)
       thead = +'<thead><tr>'
